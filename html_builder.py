@@ -34,7 +34,9 @@ def make_html(root_node: TreeNode, template, category='', subcategory='', view_n
 
         table_content += '<td class="nowrap"><ul class="tree">{0}</ul></td>'.format(h)
 
-    return template().make(
+
+    # CHANGED make HERE
+    return template().make1(
         Category=category,
         Subcategory=subcategory,
         View_Name=view_name,

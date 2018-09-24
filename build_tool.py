@@ -20,7 +20,7 @@ Options:
 from docopt import docopt
 import pandas as pd
 import os
-from html_template import CompleteToolTemplate
+from html_template import CompleteToolTemplate, CompleteToolTemplate1
 from product_table_to_html import product_table_to_html
 from printing_utility import print_header_value_variation_stat
 
@@ -49,7 +49,8 @@ def build_tool():
 
     print(list(config_dict))
 
-    template = CompleteToolTemplate()
+    #changed here
+    template = CompleteToolTemplate1()
 
     if args['--row']:
         row_index_list = map(int, args['--row'])

@@ -1,5 +1,6 @@
 from string import Template
 from html_parser import get_div_tag_attributes
+from html_page_content import SwitchableViewMaker
 
 
 class ProductTableAsCompletePage:
@@ -185,6 +186,22 @@ class ProductTableAsCompletePage:
 
 class ProductTableOnly:
 
+    html1 = Template('''
+    <div 
+        data-main-category="${Category}"
+        data-subcategory="${Subcategory}"
+        data-view-name="${View_Name}">
+     <table>
+        <tr>
+        ${Table_Headers}
+        </tr>
+        <tr>
+        ${Table_Content}
+        </tr>
+    </table>
+    </div>
+    ''')
+
     html = Template('''
     <div class="hideable" data-activate-on="${Category}-${Subcategory}-${View_Name}"
         data-button-name="${View_Name}"
@@ -214,24 +231,262 @@ class ProductTableOnly:
             Table_Content=f['Table_Content'],
         )
 
+    def make1(self, **f):
+        return self.html1.substitute(
+            Category=f['Category'],
+            Subcategory=f['Subcategory'],
+            View_Name=f['View_Name'],
+            Page_Title=f['Page_Title'],
+            Table_Title=f['Table_Title'],
+            Table_Headers=f['Table_Headers'],
+            Table_Content=f['Table_Content'],
+        )
+
+class CompleteToolTemplate1:
+
+    html = Template('''
+        <!DOCTYPE HTML>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${Page_Title}</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+        <style>${Style}</style>
+            ${SwitchableContent}
+        <script>${Script}</script>
+        <body>
+        </body>
+        </html>
+        ''')
+
+    style = '''
+            div.product_table {
+                display: "none";
+            }
+            body {
+                font-family: Arial;
+            }
+            ul.tree li {
+                list-style-type: none;
+                position: relative;
+            }
+            ul.tree li ul {
+                display: none;
+            }
+            ul.tree li.open > ul {
+                display: block;
+            }
+
+            ul.tree li a {
+                color: black;
+                text-decoration: none;
+            }
+
+            ul.tree li a:before {
+                height: 1em;
+                padding:0 .1em;
+                font-size: .8em;
+                display: block;
+                position: absolute;
+                left: -1.3em;
+                top: .2em;
+            }
+
+            ul.tree li > a:not(:last-child):before {
+                content: '+';
+            }
+
+            ul.tree li.open > a:not(:last-child):before {
+                content: '-';
+            }
+            td {
+                vertical-align: top;
+            }
+
+            table, th, td {
+                border: 3px solid red;
+                border-collapse: collapse;
+            }
+
+            th {
+                background: lightgrey
+            }
+
+            tr td:first-child {
+                background: lightgrey;
+                font-weight: bold;
+            }
+
+            a:hover {
+                background: lightgray;
+            }
+
+            span.package, span.housing {
+                font-weight: bold;
+                color: black;
+            }
+
+            span.technology {
+                font-weight: bold;
+                color: green;
+            }
+
+            span.configuration {
+                font-weight: bold;
+                color: brown;
+            }
+
+            span.features {
+                font-weight: bold;
+                color: darkblue;
+            }
+
+            span.qualification, span.applications {
+                font-weight: bold;
+                color: darkblue;
+            }
+
+
+            span.product {
+                font-weight: bold;
+                color: darkviolet;
+            }
+            span.measure_value {
+                font-weight: bold;
+                color: darkblue;
+            }
+
+            span.measure_unit {
+                font-weight: bold;
+                color: orangered;
+            }
+
+            td.nowrap{
+                white-space: nowrap;
+            }
+
+            .hideable {
+                display: none
+            }
+
+            button {
+                margin: 2px 2px;
+            }
+
+            button {
+            background-color: white;
+            font-weight: bold;
+            color: black; 
+            border-radius: 10px;
+            border: 2px solid #f44336;
+            }
+
+            button:hover {
+            background-color: lightgray; 
+            }
+
+            button.pressed {
+            background-color: lightgray; 
+            font-weight: bold;
+            color: black; 
+            border-radius: 10px;
+            border: 2px solid #f44336;
+            }
+            span.buttons_header {
+                font-family: Verdana;
+                font-weight: bold 
+            }
+
+        '''
+
+    script = '''
+         $(document).ready(function(){
+                $(".selectable-view").hide()
+
+                $(".change-view-but").click(function(){
+
+                    $(this).addClass("pressed")
+                    $(this).siblings("button").removeClass("pressed")
+                    
+                    $(this).siblings(".selectable-view").hide()
+                    //$(".selectable-view").hide()
+
+                    const v =  $(this).attr("view-id")
+                    $(this).siblings( `.selectable-view[view-id="${v}"]`).show()
+                    
+                });
+                
+                $(".change-view-but:first-child").trigger('click')
+                
+            });
+        
+        var tree = document.querySelectorAll('ul.tree a:not(:last-child)');
+        for(var i = 0; i < tree.length; i++){
+            tree[i].addEventListener('click', function(e) {
+                        var parent = e.target.parentElement;
+                        var classList = parent.classList;
+                        if(classList.contains("open")) {
+                            classList.remove('open');
+                            var opensubs = parent.querySelectorAll(':scope .open');
+                            for(var i = 0; i < opensubs.length; i++){
+                                opensubs[i].classList.remove('open');
+                            }
+                        } else {
+                            classList.add('open');
+                        }
+                        e.preventDefault();
+                    });
+                }
+
+        var x = document.getElementsByClassName('product_status');
+        for (var i = 0; i < x.length; i++){
+            if (x[i].innerHTML=='not for new design' || x[i].innerHTML=='discontinued'){
+                x[i].style.cssText= "color: red; font-weight: bold;";
+            }
+            else{
+                x[i].style.cssText= "color: green; font-weight: bold;";
+            }
+        }
+
+
+
+        '''
+
+    def __init__(self):
+        self.switchable_content = SwitchableViewMaker()
+
+    def add_table(self, html):
+        self.switchable_content.add_table(html)
+
+    def make(self):
+        return self.html.substitute(
+            Page_Title="Product Selection Tool",
+            SwitchableContent=self.switchable_content.make(),
+            Script=self.script,
+            Style=self.style,
+        )
 
 class CompleteToolTemplate:
 
+
     html = Template('''
-    <!DOCTYPE HTML>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>${Page_Title}</title>
-    </head>
-    <style>${Style}</style>
-        ${ButtonsSections}
-        ${TableSections}       
-    <script>${Script}</script>
-    <body>
-    </body>
-    </html>
-    ''')
+        <!DOCTYPE HTML>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>${Page_Title}</title>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        </head>
+        <style>${Style}</style>
+            ${ButtonsSections}
+            ${TableSections}
+        <script>${Script}</script>
+        <body>
+        </body>
+        </html>
+        ''')
+
 
     script = '''
     function HideAllTables(){
@@ -602,3 +857,4 @@ class ButtonsAndDataSection:
 
     def make_tables(self):
         return ''.join(self.tables)
+
