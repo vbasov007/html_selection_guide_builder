@@ -1,14 +1,14 @@
 from anytree import Node
-import copy
 from html_parser import get_div_tag_attributes
 
 from switch_view_html import SwitchableViewHtml
+
 
 class SwitchableViewMaker:
 
     def __init__(self):
         self.content_tree_root = Node('root')
-        self.switchable_view = SwitchableViewHtml()
+        self.level_caption = dict()
         pass
 
     def _build_content_tree(self, main_category_name, sub_category_name, view_name, table_html):
@@ -20,7 +20,6 @@ class SwitchableViewMaker:
             return Node(node_name, parent=parent)
 
         def add_data(node, data):
-            #node.__dict__.update({"table_html": copy.deepcopy(data)})
             node.__dict__.update({"table_html": data})
 
         level = update_tree(main_category_name, self.content_tree_root)
@@ -38,13 +37,24 @@ class SwitchableViewMaker:
             attr['data-view-name'],
             table_html,)
 
+    def add_level_caption(self, level_num, caption):
+        self.level_caption.update({level_num: caption})
+
+    def get_level_caption(self, level_num):
+        if level_num in self.level_caption:
+            return self.level_caption[level_num]
+        else:
+            return ''
+
     def make(self):
-        def make_level(root_node):
+        def make_levels(root_node, level_num):
             svh = SwitchableViewHtml()
 
             if len(root_node.children) > 0:
                 for n in root_node.children:
-                    svh.add_selectable_content(n.name, n.name, make_level(n))
+                    svh.add_selectable_content(n.name, n.name, make_levels(n, level_num+1))
+
+                svh.set_title(self.get_level_caption(level_num))
                 return svh.make()
             else:
                 if "table_html" in root_node.__dict__:
@@ -52,5 +62,5 @@ class SwitchableViewMaker:
                 else:
                     return "NO DATA"
 
-        return make_level(self.content_tree_root)
+        return make_levels(self.content_tree_root, 0)
 

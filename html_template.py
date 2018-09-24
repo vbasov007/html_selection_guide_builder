@@ -455,6 +455,9 @@ class CompleteToolTemplate1:
 
     def __init__(self):
         self.switchable_content = SwitchableViewMaker()
+        self.switchable_content.add_level_caption(0, 'CATEGORY: ')
+        self.switchable_content.add_level_caption(1, 'SUB-CATEGORY: ')
+        self.switchable_content.add_level_caption(2, 'SELECT PART BY: ')
 
     def add_table(self, html):
         self.switchable_content.add_table(html)

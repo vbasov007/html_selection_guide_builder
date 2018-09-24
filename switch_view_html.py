@@ -5,12 +5,10 @@ class SwitchableViewHtml:
 
     def __init__(self):
         self.content = list()
+        self.title = ''
 
     html = Template('''
-    <div>
-        ${Buttons}
-        ${Views}
-    </div>''')
+    <div>${Title}${Buttons}${Views}</div>''')
 
     button_template = Template('''
     <button  class="change-view-but" view-id="${ViewId}">${Caption}</button>''')
@@ -18,6 +16,9 @@ class SwitchableViewHtml:
     selectable_content_template = Template('''
     <div class="selectable-view" view-id="${ViewId}">${SelectableContent}</div>
     ''')
+
+    def set_title(self, title):
+        self.title = title
 
     def add_selectable_content(self, view_id, caption, selectable_content):
         self.content.append(
@@ -41,5 +42,5 @@ class SwitchableViewHtml:
                 SelectableContent=view['SelectableContent']
             )
 
-        return self.html.substitute(Buttons=buttons_html, Views=content_html)
+        return self.html.substitute(Title=self.title, Buttons=buttons_html, Views=content_html)
 
