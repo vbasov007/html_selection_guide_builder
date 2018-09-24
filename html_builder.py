@@ -36,7 +36,7 @@ def make_html(root_node: TreeNode, template, category='', subcategory='', view_n
 
 
     # CHANGED make HERE
-    return template().make1(
+    return template().make(
         Category=category,
         Subcategory=subcategory,
         View_Name=view_name,

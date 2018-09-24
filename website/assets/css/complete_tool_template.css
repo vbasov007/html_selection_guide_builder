@@ -1,0 +1,137 @@
+
+div.product_table {
+    display: "none";
+}
+body {
+    font-family: Arial;
+}
+ul.tree li {
+    list-style-type: none;
+    position: relative;
+}
+ul.tree li ul {
+    display: none;
+}
+ul.tree li.open > ul {
+    display: block;
+}
+
+ul.tree li a {
+    color: black;
+    text-decoration: none;
+}
+
+ul.tree li a:before {
+    height: 1em;
+    padding:0 .1em;
+    font-size: .8em;
+    display: block;
+    position: absolute;
+    left: -1.3em;
+    top: .2em;
+}
+
+ul.tree li > a:not(:last-child):before {
+    content: '+';
+}
+
+ul.tree li.open > a:not(:last-child):before {
+    content: '-';
+}
+td {
+    vertical-align: top;
+}
+
+table, th, td {
+    border: 3px solid red;
+    border-collapse: collapse;
+}
+
+th {
+    background: lightgrey
+}
+
+tr td:first-child {
+    background: lightgrey;
+    font-weight: bold;
+}
+
+a:hover {
+    background: lightgray;
+}
+
+span.package, span.housing {
+    font-weight: bold;
+    color: black;
+}
+
+span.technology {
+    font-weight: bold;
+    color: green;
+}
+
+span.configuration {
+    font-weight: bold;
+    color: brown;
+}
+
+span.features {
+    font-weight: bold;
+    color: darkblue;
+}
+
+span.qualification, span.applications {
+    font-weight: bold;
+    color: darkblue;
+}
+
+
+span.product {
+    font-weight: bold;
+    color: darkviolet;
+}
+span.measure_value {
+    font-weight: bold;
+    color: darkblue;
+}
+
+span.measure_unit {
+    font-weight: bold;
+    color: orangered;
+}
+
+td.nowrap{
+    white-space: nowrap;
+}
+
+.hideable {
+    display: none
+}
+
+button {
+    margin: 2px 2px;
+}
+
+button {
+background-color: white;
+font-weight: bold;
+color: black;
+border-radius: 10px;
+border: 2px solid #f44336;
+}
+
+button:hover {
+background-color: lightgray;
+}
+
+button.pressed {
+background-color: lightgray;
+font-weight: bold;
+color: black;
+border-radius: 10px;
+border: 2px solid #f44336;
+}
+span.buttons_header {
+    font-family: Verdana;
+    font-weight: bold
+}
