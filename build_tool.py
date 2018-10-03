@@ -1,10 +1,9 @@
 """
-Usage: build_tool CONFIG_XLSX OUT_HTML [--in_folder=INPUT_FOLDER] [--out_folder=OUTPUT_FOLDER] [-p]
+Usage: build_tool CONFIG_XLSX [--in_folder=INPUT_FOLDER] [--out_folder=OUTPUT_FOLDER] [-p]
                     [--row=CONFIG_FILE_ROW]...
 
 Arguments:
     CONFIG_XLSX         Config excel file path
-    OUT_HTML            Input html file path
     INPUT_FOLDER        Input data folder
     OUTPUT_FOLDER       Output data folder
 
@@ -49,18 +48,24 @@ def build_tool():
 
     print(list(config_dict))
 
-    template = CompleteToolTemplate()
-
     if args['--row']:
-        row_index_list = map(int, args['--row'])
+        row_index_list = list(map(int, args['--row']))
     else:
-        row_index_list = map(int, list(config_dict))
+        row_index_list = list(map(int, list(config_dict)))
+
+    print(row_index_list)
+
+    output_files_dict = dict()
+    for i in row_index_list:
+        row = config_dict[i]
+        output_file_name = row['output_html']
+        if output_file_name not in output_files_dict:
+            output_files_dict.update({output_file_name: CompleteToolTemplate()})
+
 
     for i in row_index_list:
-
         row = config_dict[i]
         row = {str(key): str(row[key]) for key in row}
-
         df = pd.read_excel(os.path.join(input_folder, row['input_xlsx']))
 
         if args['--print']:
@@ -80,13 +85,13 @@ def build_tool():
             row['include_only'],
             row['match'],
             )
-
+        template = output_files_dict[row['output_html']]
         template.add_table(table_html)
 
-    out_html = template.make()
-
-    with open(os.path.join(output_folder, args['OUT_HTML']), "w", encoding='utf-8') as out_html_file:
-        out_html_file.write(out_html)
+    for file_name in output_files_dict:
+        out_html = output_files_dict[file_name].make()
+        with open(os.path.join(output_folder, file_name), "w", encoding='utf-8') as out_html_file:
+            out_html_file.write(out_html)
 
 
 def build_tool_test():
