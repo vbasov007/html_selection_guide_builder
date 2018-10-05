@@ -131,7 +131,22 @@ color: black;
 border-radius: 10px;
 border: 2px solid #f44336;
 }
+
 span.buttons_header {
     font-family: Verdana;
     font-weight: bold
+}
+
+a.main-menu-but {
+	margin: 10px 10px;
+	background-color: white;
+	font-weight: bold;
+	color: black;
+}
+a.main-menu-but:hover {
+	background-color: lightgray;
+}
+
+a.main-menu-but.selected_main_menu_item {
+	background-color: lightgray;
 }

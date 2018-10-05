@@ -19,7 +19,7 @@ Options:
 from docopt import docopt
 import pandas as pd
 import os
-from html_template import CompleteToolTemplate
+from html_template import CompleteToolTemplate, MainMenuTemplate
 from product_table_to_html import product_table_to_html
 from printing_utility import print_header_value_variation_stat
 
@@ -55,12 +55,15 @@ def build_tool():
 
     print(row_index_list)
 
+    main_menu = MainMenuTemplate()
+
     output_files_dict = dict()
     for i in row_index_list:
         row = config_dict[i]
         output_file_name = row['output_html']
         if output_file_name not in output_files_dict:
             output_files_dict.update({output_file_name: CompleteToolTemplate()})
+            main_menu.add_item(row['main_menu_item'], output_file_name)
 
 
     for i in row_index_list:
@@ -89,6 +92,7 @@ def build_tool():
         template.add_table(table_html)
 
     for file_name in output_files_dict:
+        output_files_dict[file_name].add_main_menu_html(main_menu.make(selected_menu_link=file_name))
         out_html = output_files_dict[file_name].make()
         with open(os.path.join(output_folder, file_name), "w", encoding='utf-8') as out_html_file:
             out_html_file.write(out_html)
