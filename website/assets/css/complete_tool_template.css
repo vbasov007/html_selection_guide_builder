@@ -138,7 +138,7 @@ span.buttons_header {
 }
 
 a.main-menu-but {
-	margin: 10px 10px;
+	margin: 10px;
 	background-color: white;
 	font-weight: bold;
 	color: black;
@@ -149,4 +149,10 @@ a.main-menu-but:hover {
 
 a.main-menu-but.selected_main_menu_item {
 	background-color: lightgray;
+}
+
+#download_zip_link {
+    margin: 10px;
+    font-weight: bold;
+    color: red
 }

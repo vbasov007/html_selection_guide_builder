@@ -1,4 +1,9 @@
+$('body').css('opacity', '0.1');
+
+
 $(document).ready(function(){
+
+
         $(".selectable-view").hide()
 
         $(".change-view-but").click(function(){
@@ -15,6 +20,8 @@ $(document).ready(function(){
         });
 
         $(".change-view-but:first-child").trigger('click')
+
+        $('body').css('opacity', '1.0');
 
     });
 

@@ -42,9 +42,13 @@ class MainMenuTemplate:
     def add_item(self, item, link):
         self.items.update({item: link})
 
-    def make(self, selected_menu_link = None):
+    def make(self, selected_menu_link=None):
 
-        output = ''
+        output = '''
+            <a id="download_zip_link"
+            href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>
+                DOWNLOAD FOR OFFLINE VIEWING
+            </a><br /><br />'''
         for item in self.items:
 
             if self.items[item] == selected_menu_link:
