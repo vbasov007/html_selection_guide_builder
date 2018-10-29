@@ -1,4 +1,4 @@
-$('body').css('opacity', '0.1');
+$('body').css('opacity', '0.5');
 
 
 $(document).ready(function(){
@@ -28,7 +28,7 @@ $(document).ready(function(){
 var tree = document.querySelectorAll('ul.tree a:not(:last-child)');
 for(var i = 0; i < tree.length; i++){
     tree[i].addEventListener('click', function(e) {
-                var parent = e.target.parentElement;
+                var parent = this.parentElement;//e.target.parentElement;
                 var classList = parent.classList;
                 if(classList.contains("open")) {
                     classList.remove('open');

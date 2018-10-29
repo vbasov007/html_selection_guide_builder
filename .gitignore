@@ -11,6 +11,7 @@ Tests/output/
 xmind-sdk-python3/
 *.xmind
 .ipynb_checkpoints/
+web1/
 
 
 # Created by https://www.gitignore.io/api/pycharm

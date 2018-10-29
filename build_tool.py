@@ -42,11 +42,12 @@ def build_tool():
 
     config_df.fillna('', inplace=True)
 
-    config_df.set_index('index')
+
+    #config_df.set_index('index')
 
     config_dict = config_df.to_dict('index')
 
-    print(list(config_dict))
+    #print(config_dict)
 
     if args['--row']:
         row_index_list = list(map(int, args['--row']))
