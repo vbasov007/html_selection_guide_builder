@@ -32,11 +32,20 @@ def span_format(css_class, string):
 
 def format_val_with_measure_units_html(string):
 
+    #exclude popular housing names
+    if string == "62 mm" or string == "34 mm":
+        return string
+
     r = re.match(r"^[-]?[\d]+\.?[\d]*[\s]+", string)
 
     try:
         val = r.group(0)
     except AttributeError:
         return string
+
+    # exclude long names started with digit
+    if len(string[len(val):]) > 7:
+        return string
+
 
     return '<span class="measure_value">{0}</span><span class="measure_unit">{1}</span>'.format(val, string[len(val):])

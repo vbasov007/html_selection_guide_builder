@@ -11,13 +11,19 @@ def tree_to_html_list(root_node: TreeNode):
 
     href = root_node.get_url()
 
+    new_product_mark_html = ''
+    if root_node.get_flag_new():
+        new_product_mark_html = '<span class="new-prod-flag">NEW</span>'
+
     if not href:
         href = '#'
 
     if len(child_html) > 0:
-        return '<li><a href="{0}">{1}</a><ul>{2}</ul></li>'.format(href, root_node.name, child_html)
+        return '<li><a href="{0}">{1}{3}</a><ul>{2}</ul></li>'.format(
+            href, root_node.name, child_html, new_product_mark_html)
     else:
-        return '<li><a href="{0}" target="_blank">{1}</a></li>'.format(href, root_node.name)
+        return '<li><a href="{0}" target="_blank">{2}{1}</a></li>'.format(
+            href, root_node.name, new_product_mark_html)
 
 
 def make_html(root_node: TreeNode, template, category='', subcategory='', view_name=''):

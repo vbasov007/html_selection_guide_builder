@@ -19,6 +19,13 @@ def take_only(df, col_name, value):
     return df[df[col_name] == str(value)]
 
 
+def count_rows(df, col_name, value):
+    if col_name in df.columns:
+        return take_only(df, col_name, value).shape[0]
+    else:
+        return 0
+
+
 def annotations(df, info_col_names):
     data = df[info_col_names]
 

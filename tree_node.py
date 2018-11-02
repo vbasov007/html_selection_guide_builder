@@ -23,6 +23,9 @@ class TreeNode(Node):
     def set_url(self, url):
         self.update_data('url', url)
 
+    def set_flag_new(self, flag: bool):
+        self.update_data('flag_new', flag)
+
     def get_topic(self):
         return self.get_data('topic')
 
@@ -34,3 +37,8 @@ class TreeNode(Node):
 
     def get_note(self):
         return self.get_data('notes')
+
+    def get_flag_new(self):
+        return self.get_data('flag_new')
+
+

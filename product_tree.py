@@ -1,6 +1,6 @@
 import pandas as pd
 from validators import url as is_url
-from dataframe_proc_utility import variations, take_only, annotations_with_title, get_single_col_value
+from dataframe_proc_utility import variations, take_only, annotations_with_title, get_single_col_value, count_rows
 from html_format_utility import span_format, format_multiline_annot, format_val_with_measure_units_html
 
 
@@ -23,11 +23,17 @@ def table_to_tree(
 
         filtered_df = take_only(df, tree_level_names[0], c)
 
+        flag_new_product = False
+        if count_rows(filtered_df, 'new_product', 'new'):
+            flag_new_product = True
+
         c = format_val_with_measure_units_html(c)
         c = span_format(tree_level_names[0], c)
 
         if len(tree_level_names) > 1:
             new_node = parent_node.new_node(c, parent_node)
+            new_node.set_flag_new(flag_new_product)
+
             table_to_tree(
                 filtered_df,
                 tree_level_names[1:],
@@ -48,6 +54,8 @@ def table_to_tree(
                 url = get_single_col_value(filtered_df, last_level_url_col_name)
                 if is_url(url):
                     new_node.set_url(url)
+
+            new_node.set_flag_new(flag_new_product)
 
     return
 

@@ -74,8 +74,12 @@ class CompleteToolTemplate:
         </head>
         <link rel="stylesheet" type="text/css" href="assets/css/complete_tool_template.css">
             ${MainMenu}
+            <div id="search_input">
+            HIGHLIGHT KEYWORD: <input type="text" id="search_text" placeholder="Type word and press Enter" size="30">
+            </div>
             ${SwitchableContent}
         <script type="text/javascript" src="assets/js/complete_tool_template.js"></script>
+        <script type="text/javascript" src="assets/js/search_highlight.js"></script>
         <body>
         </body>
         </html>
