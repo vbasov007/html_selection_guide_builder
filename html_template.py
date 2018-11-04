@@ -44,11 +44,7 @@ class MainMenuTemplate:
 
     def make(self, selected_menu_link=None):
 
-        output = '''
-            <a id="download_zip_link"
-            href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>
-                DOWNLOAD FOR OFFLINE VIEWING
-            </a><br /><br />'''
+        output = ''
         for item in self.items:
 
             if self.items[item] == selected_menu_link:
@@ -78,6 +74,8 @@ class CompleteToolTemplate:
             HIGHLIGHT KEYWORD: <input type="text" id="search_text" placeholder="Type word and press Enter" size="30">
             </div>
             ${SwitchableContent}
+        <a id="download_zip_link" 
+        href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>DOWNLOAD FOR OFFLINE VIEWING</a>
         <script type="text/javascript" src="assets/js/complete_tool_template.js"></script>
         <script type="text/javascript" src="assets/js/search_highlight.js"></script>
         <body>

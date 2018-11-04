@@ -3,15 +3,17 @@ $('#search_text').on('keyup', function () {
 
     if(event.keyCode === 13) {
 
-        var search = $(this).val().toLowerCase();
+        let search = $(this).val().toLowerCase();
         $('.search-highlight').toggleClass('search-highlight');
+        $('.search-highlight-tree').toggleClass('search-highlight-tree');
 
-        if (search.length > 2) {
+        if (search.length > 1) {
 
-            $('ul.tree li > a').each(function () {
-                var val = $(this).text().toLowerCase();
+            $('ul.tree li > a > span').each(function () {
+                let val = $(this).text().toLowerCase();
                 if (val.match(search)) {
-                    $(this).parentsUntil('ul.tree').addClass('search-highlight');
+                    $(this).parent().parentsUntil('ul.tree').addClass('search-highlight-tree');
+                    $(this).addClass('search-highlight');
                 }
             })
 

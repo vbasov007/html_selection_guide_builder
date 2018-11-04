@@ -19,7 +19,7 @@
 
 
 div.product_table {
-    display: "none";
+    display: none;
 }
 body {
     font-family: "Arial";
@@ -40,9 +40,10 @@ ul.tree li a {
     text-decoration: none;
 }
 
+
 ul.tree li a:before {
     height: 1em;
-    padding:5 .5em;
+    /*padding: .5em;*/
     font-size: .8em;
     display: block;
     position: absolute;
@@ -162,7 +163,7 @@ button {
 button {
 	background-color: var(--ifx-ocean-color);
 	font-weight: bold;
-	color: var(--ifx-engineering-dack-color);
+	color: var(--ifx-engineering-dark-color);
 	opacity: 0.5
 
 /*border-radius: 10px;*/
@@ -228,6 +229,16 @@ span.new-prod-flag {
 	vertical-align: top;
 }
 
+/*
 ul.tree li:not(.open).search-highlight {
+    background-color: var(--ifx-sand-color);
+}
+*/
+
+.search-highlight {
+    background-color: var(--ifx-sand-dark-color);
+}
+
+li:not(.open).search-highlight-tree > a:not(:last-child) > span{
     background-color: var(--ifx-sand-color);
 }
