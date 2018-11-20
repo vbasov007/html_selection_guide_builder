@@ -14,8 +14,6 @@ def table_to_tree(
     if df.empty:
         return
 
-    line_break = '<br />'
-
     conditions = variations(df, tree_level_names[0])
     for c in conditions:
         if pd.isna(c):
@@ -47,13 +45,23 @@ def table_to_tree(
 
             ann_list.extend(pop_up_notes_list)
 
-            new_node = parent_node.new_node(
-                "{0}{1}{2}".format(c, line_break, format_multiline_annot(ann_list)), parent_node)
-
             if last_level_url_col_name:
                 url = get_single_col_value(filtered_df, last_level_url_col_name)
-                if is_url(url):
-                    new_node.set_url(url)
+                if not is_url(url):
+                    url = "#"
+            else:
+                url = "#"
+
+            #new_node = parent_node.new_node(
+            #    """{0} <span class=ds_link onclick="location.href='{1}'">(datasheet)</span><br />{2}""".format(
+            #        c, url, format_multiline_annot(ann_list)), parent_node)
+            new_node = parent_node.new_node(
+                """{0} <span class=ds_link>(<a href='{1}' target='_blank'>datasheet</a>)</span><br />{2}""".format(
+                    c, url, format_multiline_annot(ann_list)), parent_node)
+
+
+#            if is_url(url):
+#                new_node.set_url(url)
 
             new_node.set_flag_new(flag_new_product)
 

@@ -68,26 +68,34 @@ class CompleteToolTemplate:
             <title>${Page_Title}</title>
             <script src="assets/js/jquery.min.js"></script>
         </head>
+        <body>
+        <div id="load-message">Loading... Wait...</div>
+        <div id='body' style="display:none;">
         <link rel="stylesheet" type="text/css" href="assets/css/complete_tool_template.css">
             ${MainMenu}
-            <div id="search_input">
-            HIGHLIGHT KEYWORD: <input type="text" id="search_text" placeholder="Type word and press Enter" size="30">
+            <div id="search_input"> <input type="text" id="search_text" placeholder="Find in this table" size="30">
             </div>
             ${SwitchableContent}
         <a id="download_zip_link" 
-        href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>DOWNLOAD FOR OFFLINE VIEWING</a>
-        <script type="text/javascript" src="assets/js/complete_tool_template.js"></script>
+        href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>Download for offline viewing</a>
+        <script type="text/javascript" src="assets/js/startup.js"></script>
+        <script type="text/javascript" src="assets/js/collapsible_view.js"></script>
         <script type="text/javascript" src="assets/js/search_highlight.js"></script>
-        <body>
+        <script type="text/javascript" src="assets/js/get_query_variable.js"></script>
+        <script type="text/javascript" src="assets/js/page_state.js"></script>
+        <script type="text/javascript" src="assets/js/productpageurl.js"></script>
+        <script type="text/javascript" src="assets/js/getdatafromjs.js"></script>
+        <script type="text/javascript" src="assets/js/product_page_redirect.js"></script>
+        </div>
         </body>
         </html>
         ''')
 
     def __init__(self):
         self.switchable_content = SwitchableViewMaker()
-        self.switchable_content.add_level_caption(0, 'CATEGORY: ')
-        self.switchable_content.add_level_caption(1, 'SUB-CATEGORY: ')
-        self.switchable_content.add_level_caption(2, 'SELECT PART BY: ')
+        self.switchable_content.add_level_caption(0, '')
+        self.switchable_content.add_level_caption(1, '')
+        self.switchable_content.add_level_caption(2, '')
 
         self.main_menu = ''
 

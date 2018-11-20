@@ -19,11 +19,12 @@ def tree_to_html_list(root_node: TreeNode):
         href = '#'
 
     if len(child_html) > 0:
-        return '<li><a href="{0}">{1}{3}</a><ul>{2}</ul></li>'.format(
-            href, root_node.name, child_html, new_product_mark_html)
+        return '<li><div class="branch">{0}{2}</div><ul>{1}</ul></li>'.format(
+            root_node.name, child_html, new_product_mark_html)
     else:
-        return '<li><a href="{0}" target="_blank">{2}{1}</a></li>'.format(
-            href, root_node.name, new_product_mark_html)
+        return '<li><div class="branch">{1}{0}</a></li>'.format(
+            root_node.name, new_product_mark_html)
+
 
 
 def make_html(root_node: TreeNode, template, category='', subcategory='', view_name=''):
