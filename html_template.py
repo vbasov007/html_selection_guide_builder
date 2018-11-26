@@ -45,6 +45,9 @@ class MainMenuTemplate:
     def make(self, selected_menu_link=None):
 
         output = ''
+
+        output += InfineonLogoTemplate.make()
+
         for item in self.items:
 
             if self.items[item] == selected_menu_link:
@@ -53,10 +56,28 @@ class MainMenuTemplate:
                 selected = ""
 
             output += self.html.substitute(Link=self.items[item], Item=item, Selected=selected)
+
+        output += DropDownMenuTemplate.make()
+
         output += "<br /><hr>"
 
         return output
 
+
+class DropDownMenuTemplate:
+    @staticmethod
+    def make():
+        return '''<div class="dropdown"><span id="top-right-menu" class="dropbtn">Menu &#x2bc6</span>
+        <div class="dropdown-content">
+        <a href="https://de.surveymonkey.com/r/SolutionFinder" target_"blank">Share Your Feedback</a>
+        <a href="https://www.infineon.com/support" target_"blank">Technical Support</a>
+        <a href="about.html" target_"blank">About</a></div></div>'''
+
+
+class InfineonLogoTemplate:
+    @staticmethod
+    def make():
+        return '''<a href="http://www.infineon.com" target="_blank"><img src="assets/img/logo-desktop-en.png" alt="INFINEON" align="middle" style="width:7%;height:7%;"></a>'''
 
 class CompleteToolTemplate:
 
@@ -107,7 +128,7 @@ class CompleteToolTemplate:
 
     def make(self):
         return self.html.substitute(
-            Page_Title="Product Selection Tool",
+            Page_Title="Smart Product Selection Map - Infineon Technologies",
             MainMenu=self.main_menu,
             SwitchableContent=self.switchable_content.make(),
         )
