@@ -20,20 +20,8 @@ function initCategorySwitches() {
 }
 
 function initCollapsibleTree() {
-
     $('ul.tree div.branch:not(:last-child)').on('click', function(){
-        var parent = this.parentElement;//e.target.parentElement;
-        var classList = parent.classList;
-        if(classList.contains("open")) {
-            classList.remove('open');
-            var opensubs = parent.querySelectorAll(':scope .open');
-            for(var i = 0; i < opensubs.length; i++){
-                opensubs[i].classList.remove('open');
-            }
-        } else {
-            classList.add('open');
-        }
-        //e.preventDefault();
+        $(this).parent().toggleClass('open');
     });
 
 }
