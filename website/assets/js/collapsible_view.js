@@ -20,23 +20,21 @@ function initCategorySwitches() {
 }
 
 function initCollapsibleTree() {
-    var tree = document.querySelectorAll('ul.tree div.branch:not(:last-child)');
-    for(var i = 0; i < tree.length; i++){
-        tree[i].addEventListener('click', function(e) {
-            var parent = this.parentElement;//e.target.parentElement;
-            var classList = parent.classList;
-            if(classList.contains("open")) {
-                classList.remove('open');
-                var opensubs = parent.querySelectorAll(':scope .open');
-                for(var i = 0; i < opensubs.length; i++){
-                    opensubs[i].classList.remove('open');
-                }
-            } else {
-                classList.add('open');
+
+    $('ul.tree div.branch:not(:last-child)').on('click', function(){
+        var parent = this.parentElement;//e.target.parentElement;
+        var classList = parent.classList;
+        if(classList.contains("open")) {
+            classList.remove('open');
+            var opensubs = parent.querySelectorAll(':scope .open');
+            for(var i = 0; i < opensubs.length; i++){
+                opensubs[i].classList.remove('open');
             }
-            e.preventDefault();
-        });
-    }
+        } else {
+            classList.add('open');
+        }
+        //e.preventDefault();
+    });
 
 }
 
