@@ -42,6 +42,7 @@ def build_tool():
 
     config_df.fillna('', inplace=True)
 
+    config_df.astype(str)
 
     #config_df.set_index('index')
 
@@ -61,16 +62,30 @@ def build_tool():
     output_files_dict = dict()
     for i in row_index_list:
         row = config_dict[i]
+
+        print("ROW#{0}".format(i))
+        print(row)
+
         output_file_name = row['output_html']
         if output_file_name not in output_files_dict:
             output_files_dict.update({output_file_name: CompleteToolTemplate()})
             main_menu.add_item(row['main_menu_item'], output_file_name)
 
-
     for i in row_index_list:
+
         row = config_dict[i]
-        row = {str(key): str(row[key]) for key in row}
+        print("Open data file:{0}".format(os.path.join(input_folder, row['input_xlsx'])))
         df = pd.read_excel(os.path.join(input_folder, row['input_xlsx']))
+
+        number_to_col_name_dict = None
+        if row['columns_map'] != '':
+            try:
+                print("Open column map file:{0}".format(os.path.join(input_folder, row['columns_map'])))
+                col_map_df = pd.read_excel(os.path.join(input_folder, row['columns_map']))
+                col_map_df = col_map_df.applymap(str)
+                number_to_col_name_dict = col_map_df.set_index('col_index').to_dict()['col_name']
+            except FileNotFoundError as e:
+                print(e)
 
         if args['--print']:
             print(row)
@@ -88,6 +103,7 @@ def build_tool():
             row['exclude'],
             row['include_only'],
             row['match'],
+            number_to_col_name_dict=number_to_col_name_dict,
             )
         template = output_files_dict[row['output_html']]
         template.add_table(table_html)

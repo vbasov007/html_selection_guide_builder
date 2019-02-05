@@ -22,7 +22,7 @@ def tree_to_html_list(root_node: TreeNode):
         return '<li><div class="branch">{0}{2}</div><ul>{1}</ul></li>'.format(
             root_node.name, child_html, new_product_mark_html)
     else:
-        return '<li><div class="branch">{1}{0}</a></li>'.format(
+        return '<li><div class="branch">{1}{0}</div></li>'.format(
             root_node.name, new_product_mark_html)
 
 

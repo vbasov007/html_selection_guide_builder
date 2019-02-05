@@ -19,14 +19,13 @@ def product_table_to_html(df,
                           url_source,
                           exclude,
                           include_only,
-                          match):
+                          match,
+                          number_to_col_name_dict=None):
 
     a_tree_levels = turn_to_list(tree_attributes.split())
     a_annotations = turn_to_list(part_attributes.split())
 
     a_main_topic_name = main_topic
-
-    a_url_col = url_source
 
     a_include_only = []
     a_exclude = []
@@ -48,7 +47,13 @@ def product_table_to_html(df,
 
     df = df.astype(str)
 
-    header_dict = table_headers_dict(df)
+    if number_to_col_name_dict is not None:
+        header_dict = number_to_col_name_dict
+        a_url_col = header_dict[str(url_source)]
+    else:
+        header_dict = table_headers_dict(df)
+        a_url_col = url_source
+
     header_list = df.columns.values.tolist()
 
     for a in a_include_only:

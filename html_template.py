@@ -69,9 +69,9 @@ class DropDownMenuTemplate:
     def make():
         return '''<div class="dropdown"><span id="top-right-menu" class="dropbtn">Menu &#x2bc6</span>
         <div class="dropdown-content">
-        <a href="https://de.surveymonkey.com/r/SolutionFinder" target_"blank">Share Your Feedback</a>
-        <a href="https://www.infineon.com/support" target_"blank">Technical Support</a>
-        <a href="about.html" target_"blank">About</a></div></div>'''
+        <a href="https://de.surveymonkey.com/r/SolutionFinder" target="_blank">Share Your Feedback</a>
+        <a href="https://www.infineon.com/support" target="_blank">Technical Support</a>
+        <a href="about.html" target="_blank">About</a></div></div>'''
 
 
 class InfineonLogoTemplate:

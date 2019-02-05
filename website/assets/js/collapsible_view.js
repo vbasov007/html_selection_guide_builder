@@ -13,6 +13,14 @@ function initCategorySwitches() {
         const v =  $(this).attr("view-id");
         $(this).siblings( `.selectable-view[view-id="${v}"]`).show();
 
+        /* check and hide if only one button in a row */
+        $('.change-view-but').each(function(){
+            if ( $(this).siblings().length < 2){
+                $(this).hide();
+            }
+
+        });
+
     });
 
     $('.change-view-but:first-child').trigger('click');
@@ -29,7 +37,7 @@ function initCollapsibleTree() {
 function highlightDiscontinuedProducts() {
     let x = document.getElementsByClassName('product_status');
     for (let i = 0; i < x.length; i++){
-        if (x[i].innerHTML=='not for new design' || x[i].innerHTML=='discontinued'){
+        if (x[i].innerHTML==='not for new design' || x[i].innerHTML==='discontinued'){
             x[i].style.cssText= "color: red; font-weight: bold;";
         }
         else{
