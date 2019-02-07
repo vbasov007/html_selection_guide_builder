@@ -34,7 +34,8 @@ class ProductTableOnly:
 
 class MainMenuTemplate:
 
-    html = Template('''<a href="${Link}" class="main-menu-but ${Selected}">${Item}</a>''')
+    html = Template('''<li><a href="${Link}" class="main-menu-but ${Selected}">${Item}</a></li>\n''')
+    wrap_ul = Template('''<ul class="main-menu">${Items_html}</ul>''')
 
     def __init__(self):
         self.items = dict()
@@ -44,22 +45,21 @@ class MainMenuTemplate:
 
     def make(self, selected_menu_link=None):
 
-        output = ''
-
+        output = '''<div class="navbar">'''
         output += InfineonLogoTemplate.make()
+        output += DropDownMenuTemplate.make()
+        output += '''</div><hr>'''
 
+        menu_html = ''
         for item in self.items:
-
             if self.items[item] == selected_menu_link:
                 selected = "selected_main_menu_item"
             else:
                 selected = ""
+            menu_html += self.html.substitute(Link=self.items[item], Item=item, Selected=selected)
 
-            output += self.html.substitute(Link=self.items[item], Item=item, Selected=selected)
-
-        output += DropDownMenuTemplate.make()
-
-        output += "<br /><hr>"
+        output += self.wrap_ul.substitute(Items_html=menu_html)
+        output += "<hr>"
 
         return output
 
@@ -67,17 +67,15 @@ class MainMenuTemplate:
 class DropDownMenuTemplate:
     @staticmethod
     def make():
-        return '''<div class="dropdown"><span id="top-right-menu" class="dropbtn">Menu &#x2bc6</span>
-        <div class="dropdown-content">
-        <a href="https://de.surveymonkey.com/r/SolutionFinder" target="_blank">Share Your Feedback</a>
-        <a href="https://www.infineon.com/support" target="_blank">Technical Support</a>
-        <a href="about.html" target="_blank">About</a></div></div>'''
+        return '''<ul><li><a href="https://de.surveymonkey.com/r/SolutionFinder" target="_blank">Share Your Feedback</a></li>\n
+		<li><a href="https://www.infineon.com/support" target="_blank">Technical Support</a></li>\n
+		<li><a href="about.html" target="_blank">About</a></li></ul>'''
 
 
 class InfineonLogoTemplate:
     @staticmethod
     def make():
-        return '''<a href="http://www.infineon.com" target="_blank"><img src="assets/img/logo-desktop-en.png" alt="INFINEON" align="middle" style="width:7%;height:7%;"></a>'''
+        return '''<a class="logo" href="http://www.infineon.com" target="_blank"><img src="assets/img/logo-desktop-en.png" alt="INFINEON"></a>'''
 
 class CompleteToolTemplate:
 

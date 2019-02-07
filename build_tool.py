@@ -44,11 +44,7 @@ def build_tool():
 
     config_df.astype(str)
 
-    #config_df.set_index('index')
-
     config_dict = config_df.to_dict('index')
-
-    #print(config_dict)
 
     if args['--row']:
         row_index_list = list(map(int, args['--row']))
