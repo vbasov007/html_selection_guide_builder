@@ -98,13 +98,7 @@ class CompleteToolTemplate:
         <a id="download_zip_link" 
         href=https://github.com/vbasov007/Infineon_Selection_Guide/archive/master.zip>Download for offline viewing</a>
         <script type="text/javascript" src="assets/js/startup.js"></script>
-        <script type="text/javascript" src="assets/js/collapsible_view.js"></script>
-        <script type="text/javascript" src="assets/js/search_highlight.js"></script>
-        <script type="text/javascript" src="assets/js/get_query_variable.js"></script>
-        <script type="text/javascript" src="assets/js/page_state.js"></script>
         <script type="text/javascript" src="assets/js/productpageurl.js"></script>
-        <script type="text/javascript" src="assets/js/getdatafromjs.js"></script>
-        <script type="text/javascript" src="assets/js/product_page_redirect.js"></script>
         </div>
         </body>
         </html>
