@@ -3,19 +3,14 @@ from html_page_content import SwitchableViewMaker
 
 
 class ProductTableOnly:
-
     html = Template('''
     <div 
         data-main-category="${Category}"
         data-subcategory="${Subcategory}"
         data-view-name="${View_Name}">
      <table>
-        <tr>
         ${Table_Headers}
-        </tr>
-        <tr>
         ${Table_Content}
-        </tr>
     </table>
     </div>
     ''')
@@ -33,7 +28,6 @@ class ProductTableOnly:
 
 
 class MainMenuTemplate:
-
     html = Template('''<li><a href="${Link}" class="main-menu-but ${Selected}">${Item}</a></li>\n''')
     wrap_ul = Template('''<ul class="main-menu">${Items_html}</ul>''')
 
@@ -77,8 +71,8 @@ class InfineonLogoTemplate:
     def make():
         return '''<a class="logo" href="http://www.infineon.com" target="_blank"><img src="assets/img/logo-desktop-en.png" alt="INFINEON"></a>'''
 
-class CompleteToolTemplate:
 
+class CompleteToolTemplate:
     html = Template('''
         <!DOCTYPE HTML>
         <html>

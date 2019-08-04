@@ -1,27 +1,27 @@
-
 from argument_parsing_utility import turn_to_list
-from product_tree import table_to_tree, parameter_names_tree
+from product_tree import table_to_tree, parameter_names_tree, table_to_short_table
 from argument_parsing_utility import parse_col_equal_to_list_argument
 from data_prefilter import include_only_data, exclude_data, include_if_match_string
 from tree_node import TreeNode
 from html_template import ProductTableOnly
-from html_builder import make_html
-from argument_parsing_utility import table_headers_dict, arg_to_header
+from html_builder import tree_to_html, table_to_html
+from argument_parsing_utility import arg_to_header
 
 
-def product_table_to_html(df,
+def product_table_to_html(df, *,
                           category,
                           subcategory,
                           view_name,
                           main_topic,
                           tree_attributes,
                           part_attributes,
-                          url_source,
+                          view_type,
+                          datasheet_url,
+                          product_page_url,
                           exclude,
                           include_only,
                           match,
-                          number_to_col_name_dict=None):
-
+                          alias_to_col_name_dict=None):
     a_tree_levels = turn_to_list(tree_attributes.split())
     a_annotations = turn_to_list(part_attributes.split())
 
@@ -47,12 +47,10 @@ def product_table_to_html(df,
 
     df = df.astype(str)
 
-    if number_to_col_name_dict is not None:
-        header_dict = number_to_col_name_dict
-        a_url_col = header_dict[str(url_source)]
-    else:
-        header_dict = table_headers_dict(df)
-        a_url_col = url_source
+    header_dict = alias_to_col_name_dict
+
+    a_datasheet_url_col = header_dict[str(datasheet_url)]
+    a_product_page_url = header_dict[str(product_page_url)]
 
     header_list = df.columns.values.tolist()
 
@@ -70,31 +68,56 @@ def product_table_to_html(df,
 
     root_node = TreeNode(a_main_topic_name)
 
-    tree_levels = [arg_to_header(a, header_dict, header_list) for a in a_tree_levels]
-    tree_levels = [a for a in tree_levels if a]
+    tree_levels = []
+    for a in a_tree_levels:
+        header = arg_to_header(a, header_dict, header_list)
+        if header:
+            if not isinstance(header, list):
+                header = [header]
+        tree_levels.extend(header)
 
     parameter_names_tree(tree_levels, root_node)
 
-    anns = [arg_to_header(a, header_dict, header_list) for a in a_annotations]
-    anns = [a for a in anns if a]
+    anns = []
+    for a in a_annotations:
+        header = arg_to_header(a, header_dict, header_list)
+        if header:
+            if not isinstance(header, list):
+                header = [header]
+        anns.extend(header)
 
-    url_col = arg_to_header(a_url_col, header_dict, header_list)
+    datasheet_url_col = arg_to_header(a_datasheet_url_col, header_dict, header_list)
+    product_page_url_col = arg_to_header(a_product_page_url, header_dict, header_list)
 
     notes = []
 
-    table_to_tree(
-        df,
-        tree_levels,
-        root_node,
-        anns,
-        notes,
-        last_level_url_col_name=url_col)
+    if view_type == 'tree':
+        table_to_tree(
+            df,
+            tree_levels,
+            root_node,
+            anns,
+            notes,
+            datasheet_url_col_name=datasheet_url_col,
+            product_page_url_col_name=product_page_url_col)
 
-    html_data = make_html(
+        html_data = tree_to_html(
             root_node,
             ProductTableOnly,
             category=category,
             subcategory=subcategory,
             view_name=view_name)
+    elif view_type == 'table':
+        short_df = table_to_short_table(df,
+                                        col_names_list=tree_levels,
+                                        ispn_col_name='Ispn',
+                                        datasheet_url_col_name=datasheet_url_col,
+                                        product_page_url_col_name=product_page_url_col,
+                                        new_product_col_name='new_product')
+        html_data = table_to_html(short_df,
+                                  ProductTableOnly,
+                                  category=category,
+                                  subcategory=subcategory,
+                                  view_name=view_name)
 
     return html_data

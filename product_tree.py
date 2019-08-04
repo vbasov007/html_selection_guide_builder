@@ -8,9 +8,9 @@ def table_to_tree(
         df, tree_level_names, parent_node,
         last_level_annotations,
         pop_up_notes,
-        last_level_url_col_name=None,
-        ):
-
+        datasheet_url_col_name=None,
+        product_page_url_col_name=None
+):
     if df.empty:
         return
 
@@ -38,30 +38,26 @@ def table_to_tree(
                 new_node,
                 last_level_annotations,
                 pop_up_notes,
-                last_level_url_col_name=last_level_url_col_name,)
+                datasheet_url_col_name=datasheet_url_col_name,
+                product_page_url_col_name=product_page_url_col_name)
         else:
             ann_list = annotations_with_title(filtered_df, last_level_annotations)
             pop_up_notes_list = annotations_with_title(filtered_df, pop_up_notes)
 
             ann_list.extend(pop_up_notes_list)
 
-            if last_level_url_col_name:
-                url = get_single_col_value(filtered_df, last_level_url_col_name)
-                if not is_url(url):
-                    url = "#"
-            else:
-                url = "#"
+            datasheet_url = ''
+            if datasheet_url_col_name:
+                datasheet_url = get_single_col_value(filtered_df, datasheet_url_col_name)
 
-            #new_node = parent_node.new_node(
-            #    """{0} <span class=ds_link onclick="location.href='{1}'">(datasheet)</span><br />{2}""".format(
-            #        c, url, format_multiline_annot(ann_list)), parent_node)
-            new_node = parent_node.new_node(
-                """{0} <span class=ds_link>(<a href='{1}' target='_blank'>datasheet</a>)</span><br />{2}""".format(
-                    c, url, format_multiline_annot(ann_list)), parent_node)
+            product_page_url = ''
+            if product_page_url_col_name:
+                product_page_url = get_single_col_value(filtered_df, product_page_url_col_name)
 
+            new_node_content = formatted_product_link(c, product_page_url,
+                                                      datasheet_url) + '</br>' + format_multiline_annot(ann_list)
 
-#            if is_url(url):
-#                new_node.set_url(url)
+            new_node = parent_node.new_node(new_node_content, parent_node)
 
             new_node.set_flag_new(flag_new_product)
 
@@ -73,3 +69,48 @@ def parameter_names_tree(tree_level_names, attach_to_node):
     for level in tree_level_names:
         new_node = attach_to_node.new_node('{0}'.format(level), parent=prev_node)
         prev_node = new_node
+
+
+def table_to_short_table(df, *,
+                         col_names_list,
+                         ispn_col_name,
+                         datasheet_url_col_name,
+                         product_page_url_col_name,
+                         new_product_col_name):
+    out_df = df.copy()
+
+    for index, row in out_df.iterrows():
+        new_flag_html = ''
+        if out_df.at[index, new_product_col_name]:
+            new_flag_html = '<span class="new-prod-flag">NEW</span>'
+        out_df.at[index, ispn_col_name] = formatted_product_link(out_df.at[index, ispn_col_name],
+                                                                 out_df.at[index, product_page_url_col_name],
+                                                                 out_df.at[
+                                                                     index, datasheet_url_col_name]) + new_flag_html
+
+    out_df = out_df[col_names_list]
+
+    # format with span tags
+    for col_name, col_values in out_df.iteritems():
+        if col_name != ispn_col_name:  # don't touch column with Ispns, since it is already formatted
+            for index, value in col_values.items():
+                value = format_val_with_measure_units_html(value)
+                value = span_format(col_name, value)
+                out_df.at[index, col_name] = value
+
+
+    return out_df
+
+
+def formatted_product_link(product_name, page_url, datasheet_url):
+    if is_url(page_url):
+        page_url_html = "<a class=product href='{0}' target='_blank'>{1}</a>".format(page_url, product_name)
+    else:
+        page_url_html = "<span class=product>{0}</span>".format(product_name)
+
+    if is_url(datasheet_url):
+        ds_url_html = "<a class=ds_link href='{0}' target='_blank'>datasheet</a>".format(datasheet_url)
+    else:
+        ds_url_html = ""
+
+    return page_url_html + ds_url_html

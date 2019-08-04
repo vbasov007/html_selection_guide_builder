@@ -1,10 +1,7 @@
-
-
 from tree_node import TreeNode
 
 
 def tree_to_html_list(root_node: TreeNode):
-
     child_html = ""
     for node in root_node.children:
         child_html += tree_to_html_list(node)
@@ -26,9 +23,7 @@ def tree_to_html_list(root_node: TreeNode):
             root_node.name, new_product_mark_html)
 
 
-
-def make_html(root_node: TreeNode, template, category='', subcategory='', view_name=''):
-
+def tree_to_html(root_node: TreeNode, template, category='', subcategory='', view_name=''):
     page_title = root_node.name
 
     table_headers_html = ""
@@ -41,6 +36,8 @@ def make_html(root_node: TreeNode, template, category='', subcategory='', view_n
 
         table_content += '<td class="nowrap"><ul class="tree">{0}</ul></td>'.format(h)
 
+    table_headers_html = "<tr>{0}</tr>".format(table_headers_html)
+    table_content = "<tr>{0}</tr>".format(table_content)
 
     # CHANGED make HERE
     return template().make(
@@ -51,5 +48,29 @@ def make_html(root_node: TreeNode, template, category='', subcategory='', view_n
         Table_Title=page_title,
         Table_Headers=table_headers_html,
         Table_Content=table_content,
-        )
+    )
 
+
+def table_to_html(table_df, template, category='', subcategory='', view_name=''):
+    table_headers_html = "<th></th>"  # skip first column
+    for header in table_df.columns.values:
+        table_headers_html += "<th>{0}</th>".format(header)
+
+    table_headers_html = "<tr>{0}</tr>".format(table_headers_html)
+
+    table_content_html = ""
+    for row_number, row in table_df.iterrows():
+        row_html = "<td></td>"  # skip first column
+        for item in row:
+            row_html += "<td>{0}</td>".format(item)
+        row_html = "<tr>{0}</tr>".format(row_html)
+        table_content_html += row_html
+
+    return template().make(
+        Category=category,
+        Subcategory=subcategory,
+        View_Name=view_name,
+        Page_Title="page_title",
+        Table_Title="page_title",
+        Table_Headers=table_headers_html,
+        Table_Content=table_content_html)

@@ -99,7 +99,7 @@ def build_tool():
             row['exclude'],
             row['include_only'],
             row['match'],
-            number_to_col_name_dict=number_to_col_name_dict,
+            alias_to_col_name_dict=number_to_col_name_dict,
             )
         template = output_files_dict[row['output_html']]
         template.add_table(table_html)

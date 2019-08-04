@@ -44,7 +44,7 @@ def annotations_with_title(df, info_col_names):
     out = []
     for col in data:
         val = data[col].values.tolist()[0]
-        if val != "-":
+        if val != "-" and val != "":
             val = format_val_with_measure_units_html(val)
             val = span_format(col, val)
             out.append("{0}: {1}".format(col, val))
